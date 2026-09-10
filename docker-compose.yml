@@ -1,0 +1,27 @@
+services:
+  backend:
+    build: ./backend
+    container_name: product-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:////app/data/products.db
+      - CORS_ORIGINS=http://localhost:4173
+    volumes:
+      - product_data:/app/data
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8000
+    container_name: product-frontend
+    ports:
+      - "4173:4173"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  product_data:
