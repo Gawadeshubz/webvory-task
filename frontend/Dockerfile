@@ -7,14 +7,11 @@ RUN npm install
 
 COPY . .
 
-# VITE_API_URL is baked in at build time since Vite env vars are
-# resolved during the build, not at container runtime.
 ARG VITE_API_URL=http://localhost:8000
 ENV VITE_API_URL=$VITE_API_URL
 
 RUN npm run build
 
-# --- Serve stage ---
 FROM node:20-alpine
 
 WORKDIR /app
